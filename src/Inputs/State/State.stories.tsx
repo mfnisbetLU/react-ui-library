@@ -13,20 +13,14 @@ export default {
     component: State,
     args: {
         states: [
-            { icon: ShoppingBag, text: 'text 1' },
-            { icon: Food, text: 'text 2' },
-            { icon: Payment, text: 'text 3' },
+            { icon: ShoppingBag, text: 'Order' },
+            { icon: Food, text: 'Food' },
+            { icon: Payment, text: 'Payment' },
         ],
-        colors: ['#ddd', '#f00'],
+        colors: {nonFocusedIcon: '#ddd', focusedIcon: '#f00', nonFocusedText: '#aaa', focusedText: '#555'},
         currentState: 0,
         size: '3em',
     },
 } as Meta;
 
 export const Basic: Story<StateProps> = (args) => <State {...args} />;
-
-/* cases
-state 0, 1, 2, ...
-colours
-size
-*/
