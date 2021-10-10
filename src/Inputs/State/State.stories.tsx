@@ -23,7 +23,7 @@ export default {
             nonFocusedText: '#aaa',
             focusedText: '#555',
         },
-        currentState: 0,
+        currState: 0,
         size: '3em',
     },
 } as Meta;

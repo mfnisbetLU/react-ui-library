@@ -42,28 +42,40 @@ export const State: React.VFC<StateProps> = ({
                 : colors.nonFocusedIcon};
         `;
 
-        const breatheAnimation = keyframes`
+        const progressAnimation = keyframes`
             0% { width: 0%; }
             100% { width: 100%; }
+        `;
+
+        const BarContainer = styled.div`
+            width: ${parseInt(size[0]) * 5}em;
+            height: ${parseInt(size[0]) / 10}em;
+            align-self: center;
+            border-radius: 50%;
+            background-color: colors.nonFocusedIcon;
         `;
 
         const Bar = styled.div`
             border-radius: 50%;
             width: 100%;
             height: 100%;
-            background-color: ${colors.focusedIcon};
-            animation-name: ${breatheAnimation};
+            background-color: ${currState <= states.length - 1
+                ? colors.focusedIcon
+                : 'transparent'};
+        `;
+
+        const BarActive = styled.div`
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            background-color: ${currState <= states.length - 1
+                ? colors.focusedIcon
+                : 'transparent'};
+            animation-name: ${progressAnimation};
             animation-timing-function: linear;
             animation-duration: 4s;
             animation-iteration-count: 1;
         `;
-        // ${i === states.length - 1
-        //     ? `background-color: transparent`
-        //     : `background-color: ${
-        //           currentState >= i + 1
-        //               ? colors.focusedIcon
-        //               : colors.nonFocusedIcon
-        //       }`};
 
         const TextWrapper = styled.p`
             color: ${currState === i
@@ -80,17 +92,13 @@ export const State: React.VFC<StateProps> = ({
                     <StateIcon />
                     <TextWrapper>{state.text}</TextWrapper>
                 </ColDiv>
-                <div
-                    style={{
-                        width: `${parseInt(size[0]) * 5}em`,
-                        height: `${parseInt(size[0]) / 10}em`,
-                        alignSelf: 'center',
-                        borderRadius: '50%',
-                        backgroundColor: colors.nonFocusedIcon,
-                    }}
-                >
-                    <Bar />
-                </div>
+                <BarContainer>
+                    {currState < i + 1 ? null : currState === i + 1 ? (
+                        <BarActive />
+                    ) : (
+                        <Bar />
+                    )}
+                </BarContainer>
             </RowDiv>
         );
     });
