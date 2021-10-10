@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LabelLayout, LabelLayoutProps } from '@Layouts';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { StyledIcon } from 'styled-icons/types';
 
 interface State {
@@ -18,46 +18,58 @@ interface Color {
 export interface StateProps extends LabelLayoutProps {
     states: State[];
     colors: Color;
-    currentState: number;
+    currState: number;
     size: string;
 }
 
 export const State: React.VFC<StateProps> = ({
     states,
     colors,
-    currentState,
+    currState,
     size,
     ...props
 }: StateProps): React.ReactElement => {
+    // const [animation, setAnimation] = useState(0);
+    // const handleTransition = () => {};
+    // useEffect(handleTransition, [animation]);
+
     const elements = states.map((state, i) => {
         const StateIcon = styled(state.icon)`
             height: ${size};
             width: ${size};
-            color: ${currentState >= i
+            color: ${currState >= i
                 ? colors.focusedIcon
                 : colors.nonFocusedIcon};
         `;
 
-        const Bar = styled.div`
-            display: inline-block;
-            border-radius: 50%;
-            width: ${parseInt(size[0]) * 5}em;
-            height: ${parseInt(size[0]) / 10}em;
-            ${i === states.length - 1
-                ? `background-color: transparent`
-                : `background-color: ${
-                      currentState >= i + 1
-                          ? colors.focusedIcon
-                          : colors.nonFocusedIcon
-                  }`};
-            align-self: center;
+        const breatheAnimation = keyframes`
+            0% { width: 0%; }
+            100% { width: 100%; }
         `;
 
+        const Bar = styled.div`
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            background-color: ${colors.focusedIcon};
+            animation-name: ${breatheAnimation};
+            animation-timing-function: linear;
+            animation-duration: 4s;
+            animation-iteration-count: 1;
+        `;
+        // ${i === states.length - 1
+        //     ? `background-color: transparent`
+        //     : `background-color: ${
+        //           currentState >= i + 1
+        //               ? colors.focusedIcon
+        //               : colors.nonFocusedIcon
+        //       }`};
+
         const TextWrapper = styled.p`
-            color: ${currentState === i
+            color: ${currState === i
                 ? colors.focusedText
                 : colors.nonFocusedText};
-            font-weight: ${currentState === i ? 'bold' : 'normal'};
+            font-weight: ${currState === i ? 'bold' : 'normal'};
             text-align: center;
             font-size: ${parseInt(size[0]) / 3}em;
         `;
@@ -68,7 +80,17 @@ export const State: React.VFC<StateProps> = ({
                     <StateIcon />
                     <TextWrapper>{state.text}</TextWrapper>
                 </ColDiv>
-                <Bar />
+                <div
+                    style={{
+                        width: `${parseInt(size[0]) * 5}em`,
+                        height: `${parseInt(size[0]) / 10}em`,
+                        alignSelf: 'center',
+                        borderRadius: '50%',
+                        backgroundColor: colors.nonFocusedIcon,
+                    }}
+                >
+                    <Bar />
+                </div>
             </RowDiv>
         );
     });
