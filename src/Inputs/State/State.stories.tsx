@@ -17,7 +17,12 @@ export default {
             { icon: Food, text: 'Food' },
             { icon: Payment, text: 'Payment' },
         ],
-        colors: {nonFocusedIcon: '#ddd', focusedIcon: '#f00', nonFocusedText: '#aaa', focusedText: '#555'},
+        colors: {
+            nonFocusedIcon: '#ddd',
+            focusedIcon: '#f00',
+            nonFocusedText: '#aaa',
+            focusedText: '#555',
+        },
         currentState: 0,
         size: '3em',
     },
