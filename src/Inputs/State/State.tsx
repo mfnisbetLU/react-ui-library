@@ -1,10 +1,15 @@
 import React from 'react';
-import { LabelLayout, LabelLayoutProps  } from '@Layouts';
+import { LabelLayout, LabelLayoutProps } from '@Layouts';
 import styled from 'styled-components';
 import { StyledIcon } from 'styled-icons/types';
 
+interface State {
+    icon: StyledIcon;
+    text: String;
+}
+
 export interface StateProps extends LabelLayoutProps {
-    states: StyledIcon[];
+    states: State[];
     colors: string[];
     currentState: number;
     size: string;
@@ -13,7 +18,7 @@ export interface StateProps extends LabelLayoutProps {
     // size: string;
 }
 
-export const State: React.FC<StateProps> = ({
+export const State: React.VFC<StateProps> = ({
     // state: int;
     // onChange: function;
     // iconProps: { colour: string };
@@ -25,40 +30,30 @@ export const State: React.FC<StateProps> = ({
     ...props
 }: StateProps): React.ReactElement => {
     //const theme = useTheme();
-    let elements = [];
-
     const ColDiv = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
         margin: 3%;
-    `
+    `;
 
-    for (let i=0; i<states.length; i++) {
-        let currentElement =
+    const elements = states.map((state, i) => {
+        return (
             <ColDiv>
-                {React.createElement(
-                    states[i],
-                    {
-                        height: size,
-                        width: size,
-                        color: (currentState >= i) ? colors[1] : colors[0],
-                    }
-                )}
-                Hello
-            </ColDiv>;
-
-        elements.push(currentElement);
-    }
+                {React.createElement(state.icon, {
+                    height: size,
+                    width: size,
+                    color: currentState >= i ? colors[1] : colors[0],
+                })}
+                {state.text}
+            </ColDiv>
+        );
+    });
 
     const RowDiv = styled.div`
         display: flex;
         flex-direction: row;
-    `
+    `;
 
-    return (
-        <RowDiv>
-            {elements}
-        </RowDiv>
-    );
+    return <RowDiv>{elements}</RowDiv>;
 };
